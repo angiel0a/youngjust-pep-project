@@ -21,4 +21,8 @@ public class AccountService {
     public Account createAccount(Account account){
         return new Account();
     }   
+
+    public Account getLoggedAccount(Account account){
+        return null;
+    }
 }

@@ -1,5 +1,11 @@
 package Controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import Model.Account;
+import Service.AccountService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -9,6 +15,8 @@ import io.javalin.http.Context;
  * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
  */
 public class SocialMediaController {
+
+    AccountService accountService; 
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
      * suite must receive a Javalin object from this method.
@@ -16,17 +24,30 @@ public class SocialMediaController {
      */
     public Javalin startAPI() {
         Javalin app = Javalin.create();
-        app.get("example-endpoint", this::exampleHandler);
-
+        // app.get("example-endpoint", this::exampleHandler);
+        app.post("/register", this::postRegistrationHandler);
         return app;
     }
 
     /**
      * This is an example handler for an example endpoint.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
+     * @throws JsonProcessingException 
+     * @throws JsonMappingException 
      */
-    private void exampleHandler(Context context) {
-        context.json("sample text");
+    private void postRegistrationHandler(Context ctx) throws JsonMappingException, JsonProcessingException {
+        ObjectMapper om = new ObjectMapper();
+        Account account = om.readValue(ctx.body(), Account.class);
+        if(!account.getUsername().isEmpty() 
+        && account.getPassword().length() >= 4 
+        && !accountService.accountExists(account.getUsername())){
+            Account accountCreated = accountService.createAccount(account);
+            if(accountCreated!=null){
+                ctx.json(om.writeValueAsString(accountCreated));
+            }else{
+                ctx.status(400);
+            } 
+        }
     }
 
 

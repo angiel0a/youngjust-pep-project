@@ -23,7 +23,17 @@ public class MessageService {
         return messageDAO.getAllMessages();
     }
 
-    public Message getMessageById(int messageId){
-        return messageDAO.getMessageById(messageId);
+    public Message getMessageById(String messageId){
+        return messageDAO.getMessageById(Integer.parseInt(messageId));
+    }
+
+    public Message deleteMessageById(String messageId){
+        Message message = getMessageById(messageId);
+        if(message != null){
+            messageDAO.deleteMessageById(Integer.parseInt(messageId));
+            return message;
+        } else {
+            return null;
+        }
     }
 }

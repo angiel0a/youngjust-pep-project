@@ -10,12 +10,5 @@ public class Main {
         SocialMediaController controller = new SocialMediaController();
         Javalin app = controller.startAPI();
         app.start(8080);
-
-        // AccountDAO dao = new AccountDAO();
-        // dao.insertAccount(new Account("joemama", "password"));
-        // Account accountCreated = dao.getAccountByUsername("joemama");
-        // System.out.println("USERNAME HERE: " + accountCreated.getUsername());
-        // System.out.println("PASS HERE: " + accountCreated.getPassword());
-        // System.out.println("ID HERE: " + accountCreated.getAccount_id());
     }
 }

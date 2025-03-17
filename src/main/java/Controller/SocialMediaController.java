@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Model.Account;
+import Model.Message;
 import Service.AccountService;
+import Service.MessageService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -17,9 +19,11 @@ import io.javalin.http.Context;
 public class SocialMediaController {
 
     AccountService accountService; 
+    MessageService messageService;
 
     public SocialMediaController(){
         this.accountService = new AccountService();
+        this.messageService = new MessageService();
     }
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
@@ -30,6 +34,7 @@ public class SocialMediaController {
         Javalin app = Javalin.create();
         app.post("/register", this::postRegistrationHandler);
         app.post("/login", this::postLoginHandler);
+        app.post("/messages", this::postMessagesHandler);
         return app;
     }
 
@@ -64,6 +69,22 @@ public class SocialMediaController {
             ctx.status(200);
         } else {
             ctx.status(401);
+        }
+    }
+
+    private void postMessagesHandler(Context ctx) throws JsonMappingException, JsonProcessingException {
+        ObjectMapper om = new ObjectMapper();
+        Message message = om.readValue(ctx.body(), Message.class);
+        if(!message.getMessage_text().isEmpty() 
+        && message.getMessage_text().length() <= 255
+        && accountService.isValidPoster(message.getPosted_by())){
+            Message messageCreated = messageService.addMessage(message);
+            if(messageCreated != null){
+                ctx.json(om.writeValueAsString(messageCreated));
+                ctx.status(200);
+            }
+        } else {
+            ctx.status(400);
         }
     }
 }

@@ -31,4 +31,11 @@ public class AccountService {
     public Account getLoggedAccount(Account account){
         return accountDAO.getAccountByUsernameAndPassword(account);
     }
+
+    public boolean isValidPoster(int accountId){
+        if(accountDAO.getAccountById(accountId) != null){
+            return true;
+        }
+        return false;
+    }
 }

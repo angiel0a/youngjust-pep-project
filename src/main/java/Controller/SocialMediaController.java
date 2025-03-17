@@ -29,7 +29,7 @@ public class SocialMediaController {
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.post("/register", this::postRegistrationHandler);
-        // app.post("/login", this::postLoginHandler);
+        app.post("/login", this::postLoginHandler);
         return app;
     }
 
@@ -55,15 +55,15 @@ public class SocialMediaController {
         } 
     }
 
-    // private void postLoginHandler(Context ctx) throws JsonMappingException, JsonProcessingException{
-    //     ObjectMapper om = new ObjectMapper();
-    //     Account account = om.readValue(ctx.body(), Account.class);
-    //     if(accountService.getLoggedAccount(account) != null){
-    //         Account loggedAccount = accountService.getLoggedAccount(account);
-    //         ctx.json(om.writeValueAsString(loggedAccount));
-    //         ctx.status(200);
-    //     } else {
-    //         ctx.status(401);
-    //     }
-    // }
+    private void postLoginHandler(Context ctx) throws JsonMappingException, JsonProcessingException{
+        ObjectMapper om = new ObjectMapper();
+        Account account = om.readValue(ctx.body(), Account.class);
+        if(accountService.getLoggedAccount(account) != null){
+            Account loggedAccount = accountService.getLoggedAccount(account);
+            ctx.json(om.writeValueAsString(loggedAccount));
+            ctx.status(200);
+        } else {
+            ctx.status(401);
+        }
+    }
 }

@@ -26,9 +26,9 @@ public class AccountService {
             return null;
         }
         return accountDAO.insertAccount(account);
-    }   
-
-    // public Account getLoggedAccount(Account account){
-    //     return null;
-    // }
+    }  
+    
+    public Account getLoggedAccount(Account account){
+        return accountDAO.getAccountByUsernameAndPassword(account);
+    }
 }

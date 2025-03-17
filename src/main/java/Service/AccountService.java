@@ -4,7 +4,7 @@ import DAO.AccountDAO;
 import Model.Account;
 
 public class AccountService {
-    AccountDAO accountDAO;
+    public AccountDAO accountDAO;
 
     public AccountService(){
         accountDAO = new AccountDAO();
@@ -15,14 +15,20 @@ public class AccountService {
     }
 
     public boolean accountExists(String username){
-        return true;
+        if(accountDAO.getAccountByUsername(username) != null){
+            return true;
+        }
+        return false;
     }
 
-    public Account createAccount(Account account){
-        return new Account();
+    public Account addAccount(Account account){
+        if(accountDAO.getAccountByUsername(account.getUsername()) != null){
+            return null;
+        }
+        return accountDAO.insertAccount(account);
     }   
 
-    public Account getLoggedAccount(Account account){
-        return null;
-    }
+    // public Account getLoggedAccount(Account account){
+    //     return null;
+    // }
 }

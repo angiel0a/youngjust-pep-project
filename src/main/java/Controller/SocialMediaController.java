@@ -122,7 +122,17 @@ public class SocialMediaController {
         ctx.status(200);
     }
 
-    private void patchMessageByIdHandler(Context context){
-        
+    private void patchMessageByIdHandler(Context ctx) throws JsonMappingException, JsonProcessingException{
+        ObjectMapper om = new ObjectMapper();
+        Message message = om.readValue(ctx.body(), Message.class);
+        if(messageService.getMessageById(ctx.pathParam("message_id")) != null
+        && !message.getMessage_text().isEmpty()
+        && message.getMessage_text().length() <= 255){
+            Message updatedMessage = messageService.updateMessageById(ctx.pathParam("message_id"), message);
+            ctx.json(om.writeValueAsString(updatedMessage));
+            ctx.status(200);
+        } else {
+            ctx.status(400);
+        }
     }
 }

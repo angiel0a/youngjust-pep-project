@@ -36,4 +36,13 @@ public class MessageService {
             return null;
         }
     }
+
+    public Message updateMessageById(String messageId, Message message){
+        messageDAO.updateMessageById(Integer.parseInt(messageId), message);
+        Message updatMessage = messageDAO.getMessageById(Integer.parseInt(messageId));
+        if(updatMessage.getMessage_text().equals(message.getMessage_text())){
+            return updatMessage;
+        } 
+        return null;
+    }
 }

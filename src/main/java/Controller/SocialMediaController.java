@@ -40,6 +40,7 @@ public class SocialMediaController {
         app.get("/messages", this::getAllMessagesHandler);
         app.get("/messages/{message_id}", this::getMessageByIdHandler);
         app.delete("/messages/{message_id}", this::deleteMessageByIdHandler);
+        app.patch("/messages/{message_id}", this::patchMessageByIdHandler);
         return app;
     }
 
@@ -119,5 +120,9 @@ public class SocialMediaController {
             ctx.json("");
         }
         ctx.status(200);
+    }
+
+    private void patchMessageByIdHandler(Context context){
+        
     }
 }

@@ -45,4 +45,8 @@ public class MessageService {
         } 
         return null;
     }
+
+    public List<Message> getAllMessagesById(String messageId){
+        return messageDAO.getAllMessagesById(Integer.parseInt(messageId));
+    }   
 }
